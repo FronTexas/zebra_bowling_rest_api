@@ -14,10 +14,16 @@ class BowlingGame:
 		peek = self.spare_queue[0]
 		del self.spare_queue[0]
 
-		self.frames[peek].extra_score = score
+		self.frames[peek].extra_score += score
 
 	def handle_strike(self, score):
-		pass
+		if len(self.strike_queue) == 0: return 
+
+		peek = self.strike_queue[0]
+
+		self.frames[peek].extra_score += score
+
+		
 
 	def throw_bowling_ball(self):
 		if self.frames[self.current_frame_index].is_first_throw:
