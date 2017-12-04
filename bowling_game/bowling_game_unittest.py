@@ -45,7 +45,7 @@ class TestBowlingGame(unittest.TestCase):
 		bowling_game = BowlingGame()
 		bowling_game.throw_bowling_ball()
 		bowling_game.throw_bowling_ball()
-		self.assertEqual(bowling_game.current_frame_index, 1)
+		self.assertEqual(bowling_game.frame_index_of_the_game, 1)
 
 	@patch('BowlingGame.BowlingGame.get_score_for_current_throw', side_effect=[5, 5, 3, 7, 4])
 	def test_to_see_if_multiple_spare_updates_the_frame_accordingly(self, mocked_function):
