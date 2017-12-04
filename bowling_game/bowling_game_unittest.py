@@ -57,6 +57,7 @@ class TestBowlingGame(unittest.TestCase):
 		bowling_game.throw_bowling_ball()
 		self.assertEqual(bowling_game.frames[0].get_total_score(), 13)
 		self.assertEqual(bowling_game.frames[1].get_total_score(), 14)
+		self.assertEqual(bowling_game.frames[2].get_total_score(), 4)
 
 	@patch('BowlingGame.BowlingGame.get_score_for_current_throw', side_effect=[10, 10, 10, 5, 2])
 	def test_to_see_if_multiple_strike_updates_the_frame_accordingly(self, mocked_function):
@@ -68,6 +69,8 @@ class TestBowlingGame(unittest.TestCase):
 		bowling_game.throw_bowling_ball()
 		self.assertEqual(bowling_game.frames[0].get_total_score(), 30)
 		self.assertEqual(bowling_game.frames[1].get_total_score(), 25)
+		self.assertEqual(bowling_game.frames[2].get_total_score(), 17)
+		self.assertEqual(bowling_game.frames[3].get_total_score(), 7)
 
 
 if __name__ == '__main__':
