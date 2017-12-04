@@ -7,6 +7,7 @@ class Frame:
 
 	def update_score(self, score):
 		self._add_to_the_correct_throw(score)
+		self.total_score = self.first_throw_score + self.second_throw_score
 
 	def toggle_is_first_throw(self):
 		self.is_first_throw = False
