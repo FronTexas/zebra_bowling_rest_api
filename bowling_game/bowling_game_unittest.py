@@ -3,8 +3,6 @@ from mock import patch
 from BowlingGame import BowlingGame
 
 class TestBowlingGame(unittest.TestCase):
-	def setUp(self):
-		pass
 
 	@patch('BowlingGame.BowlingGame.get_score_for_current_throw', return_value=5)
 	def test_to_see_if_first_throw_score_updated_accordingly_when_the_player_get_open_frame(self, mocked_function):
@@ -30,9 +28,16 @@ class TestBowlingGame(unittest.TestCase):
 	@patch('BowlingGame.BowlingGame.get_score_for_current_throw', side_effect=[10, 3, 2])
 	def test_to_see_if_striked_frame_updated_accordingly_when_the_player_get_open_frame(self, mocked_function):
 		bowling_game = BowlingGame()
+
+		# throwing a strike on first frame
 		bowling_game.throw_bowling_ball()
+		
+		# throwing a 3
 		bowling_game.throw_bowling_ball()
+
+		# throwing a 2
 		bowling_game.throw_bowling_ball()
+
 		self.assertEqual(bowling_game.frames[0].get_total_score(), 15)
 
 	@patch('BowlingGame.BowlingGame.get_score_for_current_throw', side_effect=[3, 2])
@@ -42,21 +47,21 @@ class TestBowlingGame(unittest.TestCase):
 		bowling_game.throw_bowling_ball()
 		self.assertEqual(bowling_game.current_frame_index, 1)
 
-	# testing having a spare 
+	@patch('BowlingGame.BowlingGame.get_score_for_current_throw', side_effect=[5, 5, 3, 7, 4])
+	def test_to_see_if_multiple_spare_updates_the_frame_accordingly(self, mocked_function):
+		bowling_game = BowlingGame()
+		bowling_game.throw_bowling_ball()
+		bowling_game.throw_bowling_ball()
+		bowling_game.throw_bowling_ball()
+		bowling_game.throw_bowling_ball()
+		bowling_game.throw_bowling_ball()
+		self.assertEqual(bowling_game.frames[0].get_total_score(), 13)
+		self.assertEqual(bowling_game.frames[1].get_total_score(), 14)
 
-	# testing having a strike 
+	@patch('BowlingGame.BowlingGame.get_score_for_current_throw', side_effect=[10, 10, 10, 5, 2])
+	def test_to_see_if_multiple_strike_updates_the_frame_accordingly(self, mocked_function):
+		pass
 
-	# testing having consecutive spare 
-
-	# testing having consecutive strike 
-
-	# testing having a spare and then open frame 
-
-	# testing having a spare and then strike 
-
-	# testing having a strike and then open frame 
-
-	# testing having a strike and then spare 
 
 if __name__ == '__main__':
 	unittest.main()
