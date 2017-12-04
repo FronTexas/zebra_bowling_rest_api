@@ -1,5 +1,8 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+from django.db import models
 from random import randint
-from Frames import Frames
+from Frame import Frame
 
 class StrikedFrame:
 	def __init__(self, index):
@@ -8,7 +11,7 @@ class StrikedFrame:
 
 class BowlingGame:
 	def __init__(self):
-		self.frames = Frames()
+		self.frames = [Frame() for i in range(10)]
 		self.frame_index_of_the_game = 0
 		self.current_throw_index = 0
 		self.spare_queue = []

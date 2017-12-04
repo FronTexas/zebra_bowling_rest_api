@@ -26,15 +26,3 @@ class Frame:
 
 	def get_total_score(self):
 		return self.first_throw_score + self.second_throw_score + self.extra_score
-
-class Frames: 
-	def __init__(self):
-		self.frames = [Frame() for i in range(10)]
-
-	def __getitem__(self, key):
-		return self.frames[key]
-
-
-
-
-
