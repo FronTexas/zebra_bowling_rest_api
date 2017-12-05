@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'bowling_game.apps.BowlingGameConfig',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
