@@ -47,14 +47,12 @@ class TestBowlingGame(TestCase):
 
 		self.assertEqual(bowling_game.frames.all()[0].get_total_score(), 15)
 
-
 	@patch(BOWLING_GAME_MODULE_PATH + '.get_score_for_current_throw', side_effect=[3, 2])
 	def test_to_see_if_frames_index_updated_accordingly_when_the_player_get_open_frame(self, mocked_function):
 		bowling_game = BowlingGame.objects.create()
 		bowling_game.throw_bowling_ball()
 		bowling_game.throw_bowling_ball()
 		self.assertEqual(bowling_game.frame_index_of_the_game, 1)
-
 
 	@patch(BOWLING_GAME_MODULE_PATH + '.get_score_for_current_throw', side_effect=[5, 5, 3, 7, 4])
 	def test_to_see_if_multiple_spare_updates_the_frame_accordingly(self, mocked_function):
@@ -81,3 +79,13 @@ class TestBowlingGame(TestCase):
 		self.assertEqual(bowling_game.frames.all()[2].get_total_score(), 17)
 		self.assertEqual(bowling_game.frames.all()[3].get_total_score(), 7)
 
+	@patch(BOWLING_GAME_MODULE_PATH + '.get_score_for_current_throw', side_effect=[10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 1, 2])
+	def test_to_see_if_getting_a_strike_on_last_frame_updates_the_last_frame_accordingly(self, mocked_function):
+		bowling_game = BowlingGame.objects.create()
+		# throw 10 times, filling all 10 frames with last frame having a strike
+		for i in range(10): bowling_game.throw_bowling_ball()
+
+		bowling_game.throw_bowling_ball()
+		bowling_game.throw_bowling_ball()
+
+		self.assertEqual(bowling_game.frames.all()[9].get_total_score(), 13)
