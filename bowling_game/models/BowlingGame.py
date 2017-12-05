@@ -3,11 +3,12 @@ from __future__ import unicode_literals
 from django.db import models
 from random import randint
 from Frame import Frame
+from django.contrib import admin
 
-class StrikedFrame:
-	def __init__(self, index):
-		self.index = index 
-		self.update_count = 0
+class StrikedFrame(models.Model):
+	index = models.IntegerField(default=0)
+	update_count = models.IntegerField(default=0)
+	bowling_game = models.ForeignKey('BowlingGame', on_delete=models.CASCADE, related_name='striked_frames')
 
 class BowlingGame(models.Model):
 	frame_index_of_the_game = models.IntegerField(default=0)
@@ -17,12 +18,16 @@ class BowlingGame(models.Model):
 	def __init__(self):
 		models.Model.__init__(self)
 		self.frames = [Frame() for i in range(10)]
-		self.strike_queue = []
+
+	def add_new_striked_frame(self, frame_index_of_the_throw):
+		striked_frame = StrikedFrame(index = frame_index_of_the_throw, bowling_game = self)
+		striked_frame.save()
+		self.striked_frames.add(striked_frame)
 
 	def handle_strike(self, score):
-		if len(self.strike_queue) == 0: return 
+		if len(self.striked_frames.all()) == 0: return 
 
-		for i, striked_frame in enumerate(self.strike_queue):
+		for i, striked_frame in enumerate(self.striked_frames.all()):
 			if abs(striked_frame.index - self.throw_index_of_the_game) <= 2: 
 				self.frames[striked_frame.index].extra_score += score
 				striked_frame.update_count += 1 
@@ -71,10 +76,9 @@ class BowlingGame(models.Model):
 		self.handle_spare(score)
 
 		if is_a_strike:
-			self.strike_queue.append(StrikedFrame(frame_index_of_the_throw))
+			self.add_new_striked_frame(frame_index_of_the_throw)
 		if is_a_spare:
 			self.update_spare_index(frame_index_of_the_throw)
-			
 		
 		# mark that the player just did a first throw	
 		if self.frames[frame_index_of_the_throw].is_first_throw:
@@ -83,8 +87,6 @@ class BowlingGame(models.Model):
 	def throw_bowling_ball(self):
 		frame_index_of_the_throw = self.frame_index_of_the_game
 		score_of_the_throw = self.get_score_for_current_throw(frame_index_of_the_throw)
-
-
 		self.update_frames(score_of_the_throw, frame_index_of_the_throw)
 		self.throw_index_of_the_game += 1
 
