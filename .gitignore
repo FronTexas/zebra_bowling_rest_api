@@ -2,3 +2,9 @@
 *.pyc
 
 bowling_game/ScratchPad.py
+
+bowling_game/models/bowling_game_unittest.py
+
+bowling_game/models/BowlingGameTemp.py
+
+bowling_game/migrations/
