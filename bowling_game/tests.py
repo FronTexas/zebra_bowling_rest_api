@@ -4,9 +4,9 @@ from __future__ import unicode_literals
 from django.test import TestCase
 from mock import patch
 
-from models.BowlingGame import BowlingGame
+from .models import BowlingGame
 
-BOWLING_GAME_MODULE_PATH = 'bowling_game.models.BowlingGame.BowlingGame'
+BOWLING_GAME_MODULE_PATH = 'bowling_game.models.BowlingGame'
 
 class TestBowlingGame(TestCase):
 
