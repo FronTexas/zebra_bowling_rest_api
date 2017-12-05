@@ -3,6 +3,8 @@ from __future__ import unicode_literals
 from django.db import models
 from random import randint
 from django.contrib import admin
+from django.db.models.signals import post_save
+
 
 class Frame(models.Model): 
 	is_first_throw = models.BooleanField(default=True)
@@ -49,8 +51,15 @@ class BowlingGame(models.Model):
 	throw_index_of_the_game = models.IntegerField(default=0)
 	spare_index = models.IntegerField(default= -1)
 
-	def __init__(self):
-		models.Model.__init__(self)
+	@classmethod
+	def post_create(cls, sender, instance, created, *args, **kwargs):
+		if not created:
+			return
+		def initialized_frames_for_the_bowling_game_instance():
+			for i in range(10):
+				frame = Frame()
+				instance.frames.add(frame, bulk=False)
+		initialized_frames_for_the_bowling_game_instance()
 
 	def add_new_striked_frame(self, frame_index_of_the_throw):
 		striked_frame = StrikedFrame(index = frame_index_of_the_throw, bowling_game=self)
@@ -127,4 +136,6 @@ class BowlingGame(models.Model):
 		self.update_frames(score_of_the_throw, frame_index_of_the_throw)
 		self.throw_index_of_the_game += 1
 		self.save()
+
+post_save.connect(BowlingGame.post_create, sender=BowlingGame)
 
