@@ -7,6 +7,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from .models import BowlingGame
 from .models import Frame
+import json
 
 BOWLING_GAME_MODULE_PATH = 'bowling_game.models.BowlingGame'
 
@@ -107,117 +108,16 @@ class TestBowlingGame(TestCase):
 class TestBowlingGameRestApi(APITestCase):
 
 	def test_if_the_game_starts_with_empty_frames(self):
-		url = ''
-		empty_frames = {
-			'0': {
-				'first_throw_score':'',
-				'second_throw_score':'',
-				'third_throw_score':''
-			}, 
-			'1': {
-				'first_throw_score':'',
-				'second_throw_score':'',
-				'third_throw_score':''
-			}, 
-			'2': {
-				'first_throw_score':'',
-				'second_throw_score':'',
-				'third_throw_score':''
-			}, 
-			'3': {
-				'first_throw_score':'',
-				'second_throw_score':'',
-				'third_throw_score':'' 
-			}, 
-			'4': {
-				'first_throw_score':'',
-				'second_throw_score':'',
-				'third_throw_score':'' 
-			}, 
-			'5': {
-				'first_throw_score':'',
-				'second_throw_score':'',
-				'third_throw_score':'' 
-			}, 
-			'6': {
-				'first_throw_score':'',
-				'second_throw_score':'',
-				'third_throw_score':''
-			}, 
-			'7': {
-				'first_throw_score':'',
-				'second_throw_score':'',
-				'third_throw_score':''
-			}, 
-			'8': {
-				'first_throw_score':'',
-				'second_throw_score':'',
-				'third_throw_score':''
-			}, 
-			'9': {
-				'first_throw_score':'',
-				'second_throw_score':'',
-				'third_throw_score':''
-			}}
+		empty_frames = [{u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}]
 		response = self.client.get('/bowling_game/')
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
 		self.assertEqual(json.loads(response.content), empty_frames)
 
 	def test_if_POST_and_gets_an_open_frame_updates_the_frame_accordingly(self):
 		url = ''
-		expected_frames = {
-			'0': {
-				'first_throw_score':'',
-				'second_throw_score':'',
-				'third_throw_score':''
-			}, 
-			'1': {
-				'first_throw_score':'',
-				'second_throw_score':'',
-				'third_throw_score':''
-			}, 
-			'2': {
-				'first_throw_score':'',
-				'second_throw_score':'',
-				'third_throw_score':''
-			}, 
-			'3': {
-				'first_throw_score':'',
-				'second_throw_score':'',
-				'third_throw_score':'' 
-			}, 
-			'4': {
-				'first_throw_score':'',
-				'second_throw_score':'',
-				'third_throw_score':'' 
-			}, 
-			'5': {
-				'first_throw_score':'',
-				'second_throw_score':'',
-				'third_throw_score':'' 
-			}, 
-			'6': {
-				'first_throw_score':'',
-				'second_throw_score':'',
-				'third_throw_score':''
-			}, 
-			'7': {
-				'first_throw_score':'',
-				'second_throw_score':'',
-				'third_throw_score':''
-			}, 
-			'8': {
-				'first_throw_score':'',
-				'second_throw_score':'',
-				'third_throw_score':''
-			}, 
-			'9': {
-				'first_throw_score':'',
-				'second_throw_score':'',
-				'third_throw_score':''
-			}}
-		expected_frames['0']['first_throw_score'] = '3'
-		expected_frames['0']['second_throw_score'] = '2'
+		expected_frames = [{u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}]
+		expected_frames[0]['first_throw_score'] = 3
+		expected_frames[0]['second_throw_score'] = 2
 		self.client.post('/bowling_game/')
 		response = self.client.get('/bowling_game/')
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
