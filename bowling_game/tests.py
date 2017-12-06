@@ -89,3 +89,16 @@ class TestBowlingGame(TestCase):
 		bowling_game.throw_bowling_ball()
 
 		self.assertEqual(bowling_game.frames.all()[9].get_total_score(), 13)
+
+	@patch(BOWLING_GAME_MODULE_PATH + '.get_score_for_current_throw', side_effect=[10, 10, 10, 10, 10, 10, 10, 10, 10, 7, 3, 1])
+	def test_to_see_if_getting_a_spare_on_last_frame_updates_the_last_frame_accordingly(self, mocked_function):
+		bowling_game = BowlingGame.objects.create()
+		
+		# throw 0 times, filling all 9 frames with last frame having a strike
+		for i in range(9): bowling_game.throw_bowling_ball()
+
+		bowling_game.throw_bowling_ball()
+		bowling_game.throw_bowling_ball()
+		bowling_game.throw_bowling_ball()
+
+		self.assertEqual(bowling_game.frames.all()[9].get_total_score(), 11)
