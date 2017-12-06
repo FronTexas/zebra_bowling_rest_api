@@ -110,7 +110,9 @@ class BowlingGame(models.Model):
 
 		self.update_frame_index_of_the_game_if_necessary(is_a_strike, frame_index_of_the_throw)		
 
-		self.handle_strike(score)
+		if frame_index_of_the_throw != self.LAST_FRAME:
+			self.handle_strike(score)
+		
 		self.handle_spare(score)
 
 		if is_a_strike:
