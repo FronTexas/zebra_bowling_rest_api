@@ -341,6 +341,3 @@ class TestBowlingGameRestApi(APITestCase):
 		response = self.client.get('/bowling_game/')
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
 		self.assertEqual(json.loads(response.content), expected_frames)
-		pass
-
-
