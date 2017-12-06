@@ -7,7 +7,7 @@ from mock import patch
 from .models import BowlingGame
 from .models import Frame
 
-BOWLING_GAME_MODULE_PATH = 'bowling_game.models.BowlingGame'
+BOWLING_GAME_MODULE_PATH = '.models.BowlingGame'
 
 class TestBowlingGame(TestCase):
 
