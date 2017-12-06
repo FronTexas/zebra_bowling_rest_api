@@ -12,6 +12,7 @@ class Frame(models.Model):
 	second_throw_score = models.IntegerField(default=0)
 	third_throw_score = models.IntegerField(default=0)
 	extra_score = models.IntegerField(default=0)
+	total_score = models.IntegerField(default=0)
 	bowling_game = models.ForeignKey('BowlingGame', on_delete=models.CASCADE, related_name='frames')
 
 	def update_scores(self, score):
@@ -25,9 +26,13 @@ class Frame(models.Model):
 			self.second_throw_score = score 
 		elif self.throw_index == THIRD_THROW:
 			self.third_throw_score = score 
-
+		self.update_total_score()
+		
 		self.throw_index += 1
 		self.save()
+
+	def update_total_score(self):
+		self.total_score = self.first_throw_score + self.second_throw_score + self.third_throw_score + self.extra_score
 
 	def add_extra_score(self, score):
 		self.extra_score += score
@@ -43,7 +48,7 @@ class Frame(models.Model):
 		return self.third_throw_score
 
 	def get_total_score(self):
-		return self.first_throw_score + self.second_throw_score + self.third_throw_score + self.extra_score
+		return total_score
 
 class StrikedFrame(models.Model):
 	index = models.IntegerField(default=0)
