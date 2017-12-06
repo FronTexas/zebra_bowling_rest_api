@@ -7,7 +7,7 @@ from mock import patch
 from .models import BowlingGame
 from .models import Frame
 
-BOWLING_GAME_MODULE_PATH = '.models.BowlingGame'
+BOWLING_GAME_MODULE_PATH = 'bowling_game.models.BowlingGame'
 
 class TestBowlingGame(TestCase):
 
@@ -66,7 +66,7 @@ class TestBowlingGame(TestCase):
 		self.assertEqual(bowling_game.frames.all()[1].get_total_score(), 14)
 		self.assertEqual(bowling_game.frames.all()[2].get_total_score(), 4)
 
-	@patch(BOWLING_GAME_MODULE_PATH + '.get_score_for_current_throw', side_effect=[10, 10, 10, 5, 2])
+	@patch(BOWLING_GAME_MODULE_PATH + '.get_score_for_current_throw', side_effect=[10, 10, 10, 5, 4])
 	def test_to_see_if_multiple_strike_updates_the_frame_accordingly(self, mocked_function):
 		bowling_game = BowlingGame.objects.create()
 		bowling_game.throw_bowling_ball()
@@ -76,8 +76,8 @@ class TestBowlingGame(TestCase):
 		bowling_game.throw_bowling_ball()
 		self.assertEqual(bowling_game.frames.all()[0].get_total_score(), 30)
 		self.assertEqual(bowling_game.frames.all()[1].get_total_score(), 25)
-		self.assertEqual(bowling_game.frames.all()[2].get_total_score(), 17)
-		self.assertEqual(bowling_game.frames.all()[3].get_total_score(), 7)
+		self.assertEqual(bowling_game.frames.all()[2].get_total_score(), 19)
+		self.assertEqual(bowling_game.frames.all()[3].get_total_score(), 9)
 
 	@patch(BOWLING_GAME_MODULE_PATH + '.get_score_for_current_throw', side_effect=[10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 1, 2])
 	def test_to_see_if_getting_a_strike_on_last_frame_updates_the_last_frame_accordingly(self, mocked_function):

@@ -18,12 +18,14 @@ class Frame(models.Model):
 		FIRST_THROW = 0
 		SECOND_THROW = 1
 		THIRD_THROW = 2
+
 		if self.throw_index == FIRST_THROW:
 			self.first_throw_score = score 
 		elif self.throw_index == SECOND_THROW: 
 			self.second_throw_score = score 
 		elif self.throw_index == THIRD_THROW:
 			self.third_throw_score = score 
+
 		self.throw_index += 1
 		self.save()
 
@@ -85,7 +87,7 @@ class BowlingGame(models.Model):
 		self.save()
 
 	def update_frame_index_of_the_game_if_necessary(self, is_a_strike, frame_index_of_the_throw):
-		if self.frame_index_of_the_game == LAST_FRAME: return
+		if self.frame_index_of_the_game == self.LAST_FRAME: return
 		
 		if is_a_strike or self.is_second_throw:
 			self.frame_index_of_the_game += 1
@@ -118,9 +120,9 @@ class BowlingGame(models.Model):
 		
 		self.save()
 
-	def reset_number_of_pins_if_necessary(self, score_of_the_throw, frame_index_of_the_game, frame_index_of_the_throw):
+	def reset_number_of_pins_if_necessary(self, score_of_the_throw, frame_index_of_the_throw):
 		is_a_strike = score_of_the_throw == 10 
-		the_game_has_move_to_next_frame = frame_index_of_the_game > frame_index_of_the_throw
+		the_game_has_move_to_next_frame = self.frame_index_of_the_game > frame_index_of_the_throw
 		if is_a_strike or the_game_has_move_to_next_frame :
 			self.current_number_of_pins = 10
 		self.save()
@@ -128,13 +130,22 @@ class BowlingGame(models.Model):
 	def get_score_for_current_throw(self):
 		return randint(0, self.current_number_of_pins)
 
+	def update_is_second_throw(self, score_of_the_throw):
+		is_strike = score_of_the_throw == 10
+
+		# if it's a strike, the is_second_throw must reset to False
+		if is_strike:
+			self.is_second_throw = False 
+		else:
+			self.is_second_throw = not self.is_second_throw
+
 	def throw_bowling_ball(self):
 		frame_index_of_the_throw = self.frame_index_of_the_game
 		score_of_the_throw = self.get_score_for_current_throw()
 		self.current_number_of_pins -= score_of_the_throw
 		self.update_frames(score_of_the_throw, frame_index_of_the_throw)
-		self.reset_number_of_pins_if_necessary()
-		self.is_second_throw = not self.is_second_throw
+		self.reset_number_of_pins_if_necessary(score_of_the_throw, frame_index_of_the_throw)
+		self.update_is_second_throw(score_of_the_throw)
 		self.throw_index_of_the_game += 1
 		self.save()
 
