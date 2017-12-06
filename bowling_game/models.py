@@ -75,7 +75,10 @@ class BowlingGame(models.Model):
 				instance.frames.add(frame, bulk=False)
 
 		initialized_frames_for_the_bowling_game_instance(instance)
-
+	
+	def get_frames(self):
+		return self.frames.all()
+	
 	def throw_bowling_ball(self):
 		frame_index_of_the_throw = self.frame_index_of_the_game
 		score_of_the_throw = self.get_score_for_current_throw()
