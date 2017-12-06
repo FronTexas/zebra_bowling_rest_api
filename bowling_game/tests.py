@@ -117,13 +117,19 @@ class TestBowlingGameRestApi(APITestCase):
 		response = self.client.post('/bowling_game/')
 		self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-	def test_if_POST_and_gets_an_open_frame_updates_the_frame_accordingly(self):
+	@patch(BOWLING_GAME_MODULE_PATH + '.get_score_for_current_throw', side_effect=[3, 2])
+	def test_if_POST_and_gets_an_open_frame_updates_the_frame_accordingly(self, mocked_function):
 		url = ''
 		expected_frames = [{u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}]
 		expected_frames[0]['first_throw_score'] = 3
 		expected_frames[0]['second_throw_score'] = 2
+		expected_frames[0]['total_score'] = 5
+		
+		self.client.get('/bowling_game/')
+		self.client.post('/bowling_game/')
 		self.client.post('/bowling_game/')
 		response = self.client.get('/bowling_game/')
+		
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
 		self.assertEqual(json.loads(response.content), expected_frames)
 
