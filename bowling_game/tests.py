@@ -151,12 +151,20 @@ class TestBowlingGameRestApi(APITestCase):
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
 		self.assertEqual(json.loads(response.content), expected_frames)
 
-	def test_if_POST_and_gets_a_spare_updates_the_frame_accordingly(self):
-		url = ''
+	@patch(BOWLING_GAME_MODULE_PATH + '.get_score_for_current_throw', side_effect=[3, 7, 5])
+	def test_if_POST_and_gets_a_spare_updates_the_frame_accordingly(self, mocked_function):
 		expected_frames = [{u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}, {u'second_throw_score': 0, u'third_throw_score': 0, u'total_score': 0, u'first_throw_score': 0}]
-		expected_frames['0']['first_throw_score'] = '5'
-		expected_frames['0']['first_throw_score'] = '/'
+		expected_frames[0]['first_throw_score'] = 3
+		expected_frames[0]['second_throw_score'] = 7
+		expected_frames[0]['total_score'] = 15
+		expected_frames[1]['first_throw_score'] = 5
+		expected_frames[1]['total_score'] = 5
+
+		self.client.get('/bowling_game/')
+		self.client.post('/bowling_game/')
+		self.client.post('/bowling_game/')
 		self.client.post('/bowling_game/')
 		response = self.client.get('/bowling_game/')
+
 		self.assertEqual(response.status_code, status.HTTP_200_OK)
 		self.assertEqual(json.loads(response.content), expected_frames)
