@@ -12,3 +12,5 @@ bowling_game/migrations/
 bowling_game/models/bowling_game_unittest.py
 
 bowling_game/models/bowling_game_unittest.py
+
+bowling_game/mock_frame.json
