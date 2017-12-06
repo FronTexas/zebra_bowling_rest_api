@@ -36,6 +36,7 @@ class Frame(models.Model):
 
 	def add_extra_score(self, score):
 		self.extra_score += score
+		self.update_total_score()
 		self.save()
 
 	def get_first_throw_score(self):
@@ -48,7 +49,7 @@ class Frame(models.Model):
 		return self.third_throw_score
 
 	def get_total_score(self):
-		return total_score
+		return self.total_score
 
 class StrikedFrame(models.Model):
 	index = models.IntegerField(default=0)
@@ -60,7 +61,6 @@ class BowlingGame(models.Model):
 	throw_index_of_the_game = models.IntegerField(default=0)
 	current_number_of_pins = models.IntegerField(default=10)
 	is_second_throw = models.BooleanField(default=False)
-	
 
 	spare_index = models.IntegerField(default= -1)
 
@@ -78,7 +78,7 @@ class BowlingGame(models.Model):
 	
 	def get_frames(self):
 		return self.frames.all()
-	
+
 	def throw_bowling_ball(self):
 		frame_index_of_the_throw = self.frame_index_of_the_game
 		score_of_the_throw = self.get_score_for_current_throw()
