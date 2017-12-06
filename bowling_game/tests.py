@@ -107,7 +107,7 @@ class TestBowlingGame(TestCase):
 class TestBowlingGameRestApi(APITestCase):
 
 	def test_if_the_game_starts_with_empty_frames(self):
-        url = ''
+		url = ''
 		empty_frames = {
 			'0': {
 				'first_throw_score':'',
