@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.shortcuts import render
-from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView 
 from rest_framework.response import Response
 from rest_framework import status
 from .models import BowlingGame
 from .serializers import FrameSerializer
+from django.http import HttpResponseBadRequest
 
 class BowlingGameView(APIView):
 
@@ -20,3 +20,11 @@ class BowlingGameView(APIView):
 			return BowlingGame.objects.create()
 		else: 
 			return BowlingGame.objects.all()[0]
+
+	def post(self, request):
+		if len(BowlingGame.objects.all()) == 0:
+			return HttpResponseBadRequest("Has to perform get first!")
+		bowling_game = BowlingGame.objects.all()[0]
+		bowling_game.throw_bowling_ball()
+		return Response()
+
